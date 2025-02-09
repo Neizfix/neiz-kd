@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1e1e2f, #2a2a3b);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 50px;
+        }
+        .kd-box {
+            position: relative;
+            background: rgba(20, 20, 20, 0.9);
+            color: rgb(255, 255, 255);
+            padding: 25px;
+            width: 220px;
+            border-radius: 15px;
+            font-size: 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease;
+        }
+        .kd-box:hover {
+            transform: scale(1.05);
+        }
+        .kd-info {
+            margin-top: 12px;
+            text-align: center;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .kd-icon {
+            width: 40px;
+            height: 40px;
+            filter: brightness(0) invert(1);
+            transition: transform 0.1s ease;
+        }
+        .kd-info:hover .kd-icon {
+            transform: scale(1.1);
+        }
+        #kd-value {
+            font-size: 32px;
+            color: #ffffff;
+        }
+        .logo {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 80px;
+            height: 80px;
+            transform: rotate(-20deg);
+        }
+
+        @media screen and (max-width: 600px) {
+            .kd-box {
+                width: 180px;
+                padding: 15px;
+                font-size: 16px;
+            }
+            #kd-value {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="kd-box">
+        <img src="image/logo.png" alt="Logo" class="logo">
+        <div class="kd-info">KD: <span id="kd-value">0.00</span></div>
+        <div class="kd-info">
+            <img src="image/gun.png" alt="Öldürme" class="kd-icon">
+            <span id="oldurme">0</span>
+        </div>
+        <div class="kd-info">
+            <img src="image/death.png" alt="Ölüm" class="kd-icon">
+            <span id="olum">0</span>
+        </div>
+    </div>
+
+    <script>
+        function updateKD(oldurme, olum) {
+            let kd = olum === 0 ? oldurme : (oldurme / olum).toFixed(2);
+            document.getElementById("kd-value").textContent = kd;
+            document.getElementById("oldurme").textContent = oldurme;
+            document.getElementById("olum").textContent = olum;
+        }
+
+        window.addEventListener("message", function(event) {
+            let data = event.data;
+            if (data.type === "updateKD") {
+                updateKD(data.oldurme, data.olum);
+            }
+        });
+    </script>
+</body>
+</html>
