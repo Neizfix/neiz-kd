@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      height: 100vh;
+      overflow: hidden;
+      background: transparent;
+    }
+    .kd-container {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      overflow: visible;
+    }
+    .logo {
+      position: absolute;
+      top: -20px;
+      right: 100px;
+      width: 45px;
+      height: 45px;
+      transform: rotate(-20deg);
+      pointer-events: none;
+      z-index: 10;
+    }
+    .kd-box {
+      background: rgba(30, 30, 30, 0.85);
+      color: #fff;
+      padding: 10px;
+      width: 130px;
+      border-radius: 4px;
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+      border: none;
+    }
+    .kd-info {
+      margin-top: 8px;
+      text-align: center;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+    .kd-icon {
+      width: 24px;
+      height: 24px;
+      filter: brightness(0) invert(1);
+    }
+    #kd-value {
+      font-size: 18px;
+    }
+    @media (max-width: 600px) {
+      .kd-box {
+        width: 120px;
+        padding: 8px;
+        font-size: 12px;
+      }
+      #kd-value {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="kd-container">
+    <img src="image/logo.png" alt="Logo" class="logo" />
+    <div class="kd-box">
+      <div class="kd-info">KD: <span id="kd-value">0.00</span></div>
+      <div class="kd-info">
+        <img src="image/gun.png" alt="Öldürme" class="kd-icon" />
+        <span id="oldurme">0</span>
+      </div>
+      <div class="kd-info">
+        <img src="image/death.png" alt="Ölüm" class="kd-icon" />
+        <span id="olum">0</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function updateKD(oldurme, olum) {
+      let kd = olum === 0 ? oldurme : (oldurme / olum).toFixed(2);
+      document.getElementById("kd-value").textContent = kd;
+      document.getElementById("oldurme").textContent = oldurme;
+      document.getElementById("olum").textContent = olum;
+    }
+
+    window.addEventListener("message", function (event) {
+      let data = event.data;
+      if (data.type === "updateKD") {
+        updateKD(data.oldurme, data.olum);
+      }
+    });
+  </script>
+</body>
+</html>
